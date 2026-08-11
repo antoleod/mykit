@@ -1,11 +1,10 @@
-// Bump these on every release that changes the JS bundle so the activate handler
-// purges the previous caches and clients pick up the new build (the old SW kept
-// serving a stale bundle that still had the broken Firestore transport).
-const CACHE_NAME = 'MyKit-cache-v7';
-const STATIC_CACHE = 'MyKit-static-v7';
+// Cache namespace for the current public release. Bump this when a release
+// changes the generated web bundle so activate purges previous app caches.
+const CACHE_NAME = 'MyKit-cache-v8';
+const STATIC_CACHE = 'MyKit-static-v8';
 
 // Detect the base path at runtime from the service worker's own URL.
-// e.g. if sw.js is at /MyKit/sw.js → BASE = "/MyKit"
+// e.g. if sw.js is at /mykit/sw.js → BASE = "/mykit"
 const BASE = self.location.pathname.replace(/\/sw\.js$/, '');
 
 // App shell — always cached on install
@@ -55,12 +54,10 @@ self.addEventListener('fetch', (event) => {
       caches.open(STATIC_CACHE).then(async (cache) => {
         try {
           const cached = await cache.match(request);
-          // Fire background fetch; catch network errors so we never resolve to null
           const networkResponse = await fetch(request).then((response) => {
             if (response.ok) cache.put(request, response.clone());
             return response;
           }).catch(() => null);
-          // Return cached version if available, then network, then hard 503
           if (cached) return cached;
           if (networkResponse) return networkResponse;
           return new Response('', { status: 503 });
