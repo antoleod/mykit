@@ -1,7 +1,7 @@
 // Cache namespace for the current public release. Bump this when a release
 // changes the generated web bundle so activate purges previous app caches.
-const CACHE_NAME = 'MyKit-cache-v8';
-const STATIC_CACHE = 'MyKit-static-v8';
+const CACHE_NAME = 'MyKit-cache-v9';
+const STATIC_CACHE = 'MyKit-static-v9';
 
 // Detect the base path at runtime from the service worker's own URL.
 // e.g. if sw.js is at /mykit/sw.js → BASE = "/mykit"
